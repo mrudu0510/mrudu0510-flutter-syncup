@@ -49,9 +49,9 @@ class _ChatScreenState extends State<ChatScreen> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(user.name),
+            Text(widget.user.name),
             Text(
-              user.goal,
+              widget.user.goal,
               style: const TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
             ),
           ],
