@@ -2,13 +2,21 @@ import 'package:flutter/material.dart';
 import '../models/user_model.dart';
 import 'chat_screen.dart';
 
-class ProfileViewScreen extends StatelessWidget {
+class ProfileViewScreen extends StatefulWidget {
   final UserProfile user;
 
   const ProfileViewScreen({super.key, required this.user});
 
   @override
+  State<ProfileViewScreen> createState() => _ProfileViewScreenState();
+}
+
+class _ProfileViewScreenState extends State<ProfileViewScreen> {
+  bool _likeButtonTapped = false;
+
+  @override
   Widget build(BuildContext context) {
+    final user = widget.user;
     return Scaffold(
       backgroundColor: const Color(0xFFF7F7FF),
       body: CustomScrollView(
@@ -112,18 +120,21 @@ class ProfileViewScreen extends StatelessWidget {
                       const SizedBox(width: 16),
                       Expanded(
                         child: ElevatedButton.icon(
-                          onPressed: () {
-                            final alreadyMatched = AppState.instance.matches
-                                .any((m) => m.uid == user.uid);
-                            if (!alreadyMatched) {
-                              AppState.instance.matches.add(user);
-                            }
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => ChatScreen(user: user),
-                              ),
-                            );
-                          },
+                          onPressed: _likeButtonTapped
+                              ? null
+                              : () {
+                                  setState(() => _likeButtonTapped = true);
+                                  final alreadyMatched = AppState.instance.matches
+                                      .any((m) => m.uid == user.uid);
+                                  if (!alreadyMatched) {
+                                    AppState.instance.matches.add(user);
+                                  }
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (_) => ChatScreen(user: user),
+                                    ),
+                                  );
+                                },
                           icon: const Icon(Icons.favorite, color: Colors.white),
                           label: const Text('Like & Chat'),
                           style: ElevatedButton.styleFrom(

@@ -149,11 +149,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   void _finishOnboarding() {
-    final existing = AppState.instance.currentUser;
-    if (existing == null) return;
+    final currentUser = AppState.instance.currentUser;
+    if (currentUser == null) return;
 
-    final name = existing.name;
-    final updated = existing.copyWith(
+    final name = currentUser.name;
+    final updated = currentUser.copyWith(
       goal: _goalController.text.trim(),
       currentLevel: _currentLevel,
       lookingFor: _lookingFor,

@@ -19,8 +19,8 @@ class _SwipeScreenState extends State<SwipeScreen>
   bool _isDragging = false;
   late AnimationController _undoController;
   int _likeCount = 0;
-  // Tracks whether the last like action created a match, for undo support
-  bool _lastLikeCreatedMatch = false;
+  // Tracks the last swipe action type and whether it produced a match, for undo support
+  _LastAction? _lastAction;
 
   @override
   void initState() {
@@ -64,14 +64,14 @@ class _SwipeScreenState extends State<SwipeScreen>
 
   void _like() {
     final profile = _profiles[_currentIndex];
-    final matched = _checkMatch(profile);
+    final matched = _checkMatch();
 
     setState(() {
       _dragOffset = Offset.zero;
       _isDragging = false;
       _likeCount++;
       _currentIndex++;
-      _lastLikeCreatedMatch = matched;
+      _lastAction = _LastAction(isLike: true, createdMatch: matched);
     });
 
     if (matched) {
@@ -85,6 +85,7 @@ class _SwipeScreenState extends State<SwipeScreen>
       _dragOffset = Offset.zero;
       _isDragging = false;
       _currentIndex++;
+      _lastAction = _LastAction(isLike: false, createdMatch: false);
     });
   }
 
@@ -92,21 +93,26 @@ class _SwipeScreenState extends State<SwipeScreen>
     if (_currentIndex == 0) return;
     setState(() {
       _currentIndex--;
-      // If the action being undone was a like that created a match, remove it
-      if (_lastLikeCreatedMatch && AppState.instance.matches.isNotEmpty) {
+      final action = _lastAction;
+      // Only roll back match state if the last action was a like that matched
+      if (action != null && action.isLike && action.createdMatch) {
         final undoneProfile = _profiles[_currentIndex];
-        AppState.instance.matches
-            .removeWhere((m) => m.uid == undoneProfile.uid);
+        final removed = AppState.instance.matches
+            .any((m) => m.uid == undoneProfile.uid);
+        if (removed) {
+          AppState.instance.matches
+              .removeWhere((m) => m.uid == undoneProfile.uid);
+          _likeCount--;
+        }
+      } else if (action != null && action.isLike) {
         _likeCount--;
       }
-      _lastLikeCreatedMatch = false;
+      _lastAction = null;
     });
   }
 
-  bool _checkMatch(UserProfile profile) {
-    final current = AppState.instance.currentUser;
-    if (current == null) return false;
-    // Demo matching: simulate a match on every first like, then every other like
+  bool _checkMatch() {
+    // Demo matching: simulate a match on every even-numbered like
     return _likeCount % 2 == 0;
   }
 
@@ -488,4 +494,10 @@ class _SwipeScreenState extends State<SwipeScreen>
       ),
     );
   }
+}
+
+class _LastAction {
+  final bool isLike;
+  final bool createdMatch;
+  const _LastAction({required this.isLike, required this.createdMatch});
 }
