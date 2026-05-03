@@ -3,7 +3,6 @@ import '../models/user_model.dart';
 
 class ChatScreen extends StatefulWidget {
   final UserProfile user;
-
   const ChatScreen({Key? key, required this.user}) : super(key: key);
 
   @override
@@ -69,9 +68,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: Align(
-                    alignment: message['isUser']
-                        ? Alignment.centerRight
-                        : Alignment.centerLeft,
+                    alignment: message['isUser'] ? Alignment.centerRight : Alignment.centerLeft,
                     child: Container(
                       constraints: BoxConstraints(
                         maxWidth: MediaQuery.of(context).size.width * 0.7,
@@ -81,9 +78,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         vertical: 12,
                       ),
                       decoration: BoxDecoration(
-                        color: message['isUser']
-                            ? const Color(0xFF6C63FF)
-                            : Colors.grey[200],
+                        color: message['isUser'] ? const Color(0xFF6C63FF) : Colors.grey[200],
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Column(
@@ -92,9 +87,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           Text(
                             message['text'],
                             style: TextStyle(
-                              color: message['isUser']
-                                  ? Colors.white
-                                  : Colors.black,
+                              color: message['isUser'] ? Colors.white : Colors.black,
                               fontSize: 14,
                             ),
                           ),
@@ -102,9 +95,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           Text(
                             message['time'],
                             style: TextStyle(
-                              color: message['isUser']
-                                  ? Colors.white70
-                                  : Colors.grey,
+                              color: message['isUser'] ? Colors.white70 : Colors.grey,
                               fontSize: 10,
                             ),
                           ),
