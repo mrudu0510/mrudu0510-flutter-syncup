@@ -50,14 +50,13 @@ class _ChatScreenState extends State<ChatScreen> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.user.name),
+            Text(user.name),
             Text(
-              widget.user.goal,
+              user.goal,
               style: const TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
             ),
           ],
         ),
-        elevation: 0,
       ),
       body: Column(
         children: [
@@ -121,7 +120,7 @@ class _ChatScreenState extends State<ChatScreen> {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               border: Border(
-                top: BorderSide(color: Colors.grey[300]!);
+                top: BorderSide(color: Colors.grey[300]!),
               ),
             ),
             child: Row(
@@ -133,7 +132,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       hintText: 'Type a message...',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(24),
-                        borderSide: BorderSide(color: Colors.grey[300]!);
+                        borderSide: BorderSide(color: Colors.grey[300]!),
                       ),
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: 16,
