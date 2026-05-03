@@ -162,7 +162,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       workingStyle: _workingStyle,
       deadline: _deadline,
       collaborationType: _collaborationType,
-      avatarInitials: name.trim().split(' ').map((w) => w.isNotEmpty ? w[0] : '').take(2).join().toUpperCase(),
+      avatarInitials: UserProfile.initialsFor(name),
     );
     AppState.instance.currentUser = updated;
 

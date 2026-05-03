@@ -19,6 +19,8 @@ class _SwipeScreenState extends State<SwipeScreen>
   bool _isDragging = false;
   late AnimationController _undoController;
   int _likeCount = 0;
+  // Tracks whether the last like action created a match, for undo support
+  bool _lastLikeCreatedMatch = false;
 
   @override
   void initState() {
@@ -62,16 +64,17 @@ class _SwipeScreenState extends State<SwipeScreen>
 
   void _like() {
     final profile = _profiles[_currentIndex];
-    final matchChance = _checkMatch(profile);
+    final matched = _checkMatch(profile);
 
     setState(() {
       _dragOffset = Offset.zero;
       _isDragging = false;
       _likeCount++;
       _currentIndex++;
+      _lastLikeCreatedMatch = matched;
     });
 
-    if (matchChance) {
+    if (matched) {
       AppState.instance.matches.add(profile);
       _showMatchPopup(profile);
     }
@@ -87,14 +90,23 @@ class _SwipeScreenState extends State<SwipeScreen>
 
   void _undo() {
     if (_currentIndex == 0) return;
-    setState(() => _currentIndex--);
+    setState(() {
+      _currentIndex--;
+      // If the action being undone was a like that created a match, remove it
+      if (_lastLikeCreatedMatch && AppState.instance.matches.isNotEmpty) {
+        final undoneProfile = _profiles[_currentIndex];
+        AppState.instance.matches
+            .removeWhere((m) => m.uid == undoneProfile.uid);
+        _likeCount--;
+      }
+      _lastLikeCreatedMatch = false;
+    });
   }
 
   bool _checkMatch(UserProfile profile) {
     final current = AppState.instance.currentUser;
     if (current == null) return false;
-    // Simulate: match if goals are same/similar category OR same time preference
-    // For demo purposes, match every other like
+    // Demo matching: simulate a match on every first like, then every other like
     return _likeCount % 2 == 0;
   }
 

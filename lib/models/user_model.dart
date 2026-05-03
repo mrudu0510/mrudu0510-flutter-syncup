@@ -27,7 +27,16 @@ class UserProfile {
     this.avatarInitials = '',
   });
 
-  UserProfile copyWith({
+  static String initialsFor(String name) {
+    final trimmed = name.trim();
+    if (trimmed.isEmpty) return 'U';
+    return trimmed
+        .split(' ')
+        .map((w) => w.isNotEmpty ? w[0] : '')
+        .take(2)
+        .join()
+        .toUpperCase();
+  }
     String? uid,
     String? name,
     String? email,

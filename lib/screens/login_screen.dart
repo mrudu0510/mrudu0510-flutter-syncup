@@ -51,9 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
       workingStyle: '',
       deadline: '',
       collaborationType: '',
-      avatarInitials: name.isNotEmpty
-          ? name.trim().split(' ').map((w) => w.isNotEmpty ? w[0] : '').take(2).join().toUpperCase()
-          : 'U',
+      avatarInitials: UserProfile.initialsFor(name),
     );
 
     AppState.instance.currentUser = profile;
