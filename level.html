@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Level</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #ffe6eb, #ffd6e0);
+    }
+
+    .wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .phone {
+      width: 100%;
+      max-width: 390px;
+      height: 100vh;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    @media (min-width: 768px) {
+      .phone {
+        height: 844px;
+        border-radius: 25px;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+      }
+    }
+
+    .header {
+      padding: 20px;
+    }
+
+    .top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .back {
+      cursor: pointer;
+    }
+
+    .step {
+      color: #ff4d6d;
+      font-size: 14px;
+    }
+
+    .progress {
+      height: 5px;
+      background: #eee;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 25%;
+      background: #ff4d6d;
+      border-radius: 10px;
+    }
+
+    .content {
+      flex: 1;
+      padding: 20px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 16px;
+      margin: 10px 0;
+      border-radius: 16px;
+      background: #f8f8f8;
+      border: none;
+      cursor: pointer;
+    }
+
+    .option.selected {
+      background: #ffe3ea;
+      border: 2px solid #ff4d6d;
+    }
+
+    .footer {
+      padding: 20px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 15px;
+      border-radius: 16px;
+      border: none;
+      background: linear-gradient(135deg, #ff4d6d, #ff758c);
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="wrapper">
+  <div class="phone">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="top">
+        <div class="back" onclick="go('goal.html')">←</div>
+        <div class="step">Step 2 of 8</div>
+      </div>
+
+      <div class="progress">
+        <div class="progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+      <h2>What’s your current level?</h2>
+
+      <button class="option" onclick="selectLevel('Beginner', this)">
+        🌱 Beginner
+      </button>
+
+      <button class="option" onclick="selectLevel('Intermediate', this)">
+        📈 Intermediate
+      </button>
+
+      <button class="option" onclick="selectLevel('Advanced', this)">
+        ⭐ Advanced
+      </button>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <button class="btn" onclick="nextPage()">Continue →</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let selectedLevel = "";
+
+// SELECT
+function selectLevel(level, element){
+  selectedLevel = level;
+  localStorage.setItem("level", level);
+
+  document.querySelectorAll(".option").forEach(btn => {
+    btn.classList.remove("selected");
+  });
+
+  element.classList.add("selected");
+}
+
+// NEXT
+function nextPage(){
+  if(selectedLevel){
+    window.location.href = "expectation.html";
+  } else {
+    alert("Please select your level");
+  }
+}
+
+// BACK
+function go(page){
+  window.location.href = page;
+}
+
+// LOAD SAVED
+window.onload = function(){
+  const saved = localStorage.getItem("level");
+  if(saved){
+    selectedLevel = saved;
+
+    document.querySelectorAll(".option").forEach(btn => {
+      if(btn.innerText.includes(saved)){
+        btn.classList.add("selected");
+      }
+    });
+  }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Consistency</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{margin:0;font-family:'Segoe UI';background:linear-gradient(135deg,#ffe6eb,#ffd6e0);}
+.wrapper{display:flex;justify-content:center;align-items:center;min-height:100vh;}
+.phone{width:100%;max-width:390px;height:100vh;background:#fff;display:flex;flex-direction:column;}
+@media(min-width:768px){.phone{height:844px;border-radius:25px;box-shadow:0 25px 50px rgba(0,0,0,0.2);}}
+.header{padding:20px;}
+.top{display:flex;gap:10px;}
+.step{color:#ff4d6d;font-size:14px;}
+.progress{height:5px;background:#eee;border-radius:10px;margin-top:10px;}
+.progress-fill{width:50%;height:100%;background:#ff4d6d;border-radius:10px;}
+.content{flex:1;padding:20px;}
+.option{padding:16px;margin:10px 0;border-radius:16px;background:#f8f8f8;border:none;cursor:pointer;}
+.option.selected{background:#ffe3ea;border:2px solid #ff4d6d;}
+.footer{padding:20px;}
+.btn{width:100%;padding:15px;border-radius:16px;border:none;background:linear-gradient(135deg,#ff4d6d,#ff758c);color:#fff;}
+</style>
+</head>
+<body>
+<div class="wrapper"><div class="phone">
+
+<div class="header">
+<div class="top"><div onclick="go('expectation.html')">←</div><div class="step">Step 4 of 8</div></div>
+<div class="progress"><div class="progress-fill"></div></div>
+</div>
+
+<div class="content">
+<h2>How often will you work?</h2>
+
+<button class="option" onclick="selectVal('Daily',this)">📅 Daily</button>
+<button class="option" onclick="selectVal('3-4 times/week',this)">📊 3–4 times/week</button>
+<button class="option" onclick="selectVal('Weekends',this)">🌴 Weekends</button>
+</div>
+
+<div class="footer">
+<button class="btn" onclick="next()">Continue →</button>
+</div>
+
+</div></div>
+
+<script>
+let selected="";
+function selectVal(v,e){selected=v;localStorage.setItem("consistency",v);
+document.querySelectorAll(".option").forEach(b=>b.classList.remove("selected"));
+e.classList.add("selected");}
+function next(){selected?location.href="time.html":alert("Select option");}
+function go(p){location.href=p;}
+window.onload=()=>{let s=localStorage.getItem("consistency");if(s){selected=s;
+document.querySelectorAll(".option").forEach(b=>{if(b.innerText.includes(s))b.classList.add("selected");});}};
+</script>
+
+</body>
+</html>

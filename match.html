@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Match</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #ffe6eb, #ffd6e0);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .phone {
+      width: 100%;
+      max-width: 390px;
+      height: 100vh;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    @media (min-width: 768px) {
+      .phone {
+        height: 844px;
+        border-radius: 25px;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+      }
+    }
+
+    /* MATCH TEXT */
+    .match-title {
+      margin-top: 40px;
+      font-size: 26px;
+      color: #ff4d6d;
+      font-weight: bold;
+    }
+
+    .sub {
+      color: #777;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    /* PROFILE CARD */
+    .card {
+      width: 85%;
+      background: #fff;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: #ffd6e0;
+      margin: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 30px;
+    }
+
+    .name {
+      margin-top: 10px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .tag {
+      background: #ffe3ea;
+      color: #ff4d6d;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      margin: 5px;
+      display: inline-block;
+    }
+
+    /* BUTTONS */
+    .buttons {
+      margin-top: 25px;
+      width: 85%;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 15px;
+      margin-top: 10px;
+      border-radius: 16px;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .primary {
+      background: linear-gradient(135deg, #ff4d6d, #ff758c);
+      color: white;
+    }
+
+    .secondary {
+      background: #f5f5f5;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="phone">
+
+  <div class="match-title">🎉 It’s a Match!</div>
+  <div class="sub">You and Aanya are a great fit</div>
+
+  <!-- PROFILE CARD -->
+  <div class="card">
+
+    <div class="avatar">👩</div>
+
+    <div class="name">Aanya</div>
+
+    <div>
+      <span class="tag">🎯 Writing</span>
+      <span class="tag">🌱 Beginner</span>
+      <span class="tag">🌅 Morning</span>
+      <span class="tag">📅 Daily</span>
+    </div>
+
+  </div>
+
+  <!-- BUTTONS -->
+  <div class="buttons">
+    <button class="btn primary" onclick="go('chat.html')">
+      Start Chat →
+    </button>
+
+    <button class="btn secondary" onclick="go('swipe.html')">
+      Keep Swiping
+    </button>
+  </div>
+
+</div>
+
+<script>
+function go(page){
+  window.location.href = page;
+}
+</script>
+
+</body>
+</html>

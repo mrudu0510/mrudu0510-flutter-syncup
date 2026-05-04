@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Swipe</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="data.js"></script>
+
+<style>
+body{
+  margin:0;
+  font-family:'Segoe UI';
+  background:linear-gradient(135deg,#ffe6eb,#ffd6e0);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.phone{
+  width:100%;
+  max-width:390px;
+  height:100vh;
+  background:#fff;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+.card{
+  width:85%;
+  padding:20px;
+  border-radius:20px;
+  background:#fff;
+  box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+
+.avatar{
+  width:80px;
+  height:80px;
+  border-radius:50%;
+  background:#ffd6e0;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:28px;
+}
+
+.tag{
+  background:#ffe3ea;
+  color:#ff4d6d;
+  padding:5px 10px;
+  border-radius:15px;
+  margin:5px;
+  display:inline-block;
+  font-size:12px;
+}
+
+.buttons{
+  margin-top:20px;
+}
+
+.btn{
+  padding:12px 20px;
+  margin:10px;
+  border:none;
+  border-radius:20px;
+  cursor:pointer;
+  font-size:16px;
+}
+
+.like{background:#ff4d6d;color:white;}
+.skip{background:#ddd;}
+</style>
+</head>
+
+<body>
+
+<div class="phone">
+
+<div class="card">
+  <div class="avatar">👤</div>
+  <h3 id="name"></h3>
+  <div id="tags"></div>
+</div>
+
+<div class="buttons">
+  <button class="btn skip" onclick="next()">❌ Skip</button>
+  <button class="btn like" onclick="match()">❤️ Match</button>
+</div>
+
+</div>
+
+<script>
+let index = 0;
+
+function showUser(){
+  let user = users[index];
+
+  document.getElementById("name").innerText = user.name;
+  document.getElementById("tags").innerHTML = `
+    <span class="tag">🎯 ${user.goal}</span>
+    <span class="tag">📊 ${user.level}</span>
+    <span class="tag">🕒 ${user.time}</span>
+    <span class="tag">📅 ${user.consistency}</span>
+  `;
+}
+
+function next(){
+  index++;
+  if(index >= users.length){
+    index = 0;
+  }
+  showUser();
+}
+
+function match(){
+  // store selected match
+  localStorage.setItem("matchName", users[index].name);
+  localStorage.setItem("matchGoal", users[index].goal);
+
+  window.location.href = "match.html";
+}
+
+// load first
+showUser();
+</script>
+
+</body>
+</html>
