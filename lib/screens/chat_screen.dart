@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
-import '../models/user_model.dart';
 
 class ChatScreen extends StatefulWidget {
-  final UserProfile user;
-  const ChatScreen({Key? key, required this.user}) : super(key: key);
+  final String partnerName;
+  final Map<String, String> userProfile;
+
+  const ChatScreen({
+    Key? key,
+    required this.partnerName,
+    required this.userProfile,
+  }) : super(key: key);
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -11,138 +16,135 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
-  final List<Map<String, dynamic>> messages = [
+  final List<Map<String, String>> messages = [
+    {'sender': 'partner', 'text': 'Hey! Let\'s start our journey together 🚀'},
     {
-      'text': 'Hey! Great to match with you 👋',
-      'isUser': false,
-      'time': '10:30 AM',
-    },
-    {
-      'text': 'Let\'s start working together!',
-      'isUser': false,
-      'time': '10:31 AM',
-    },
-    {
-      'text': 'Sounds good! When should we start?',
-      'isUser': true,
-      'time': '10:32 AM',
+      'sender': 'partner',
+      'text': 'I\'m excited to work on this goal with you!'
     },
   ];
-
-  void _sendMessage() {
-    if (_messageController.text.isNotEmpty) {
-      setState(() {
-        messages.add({
-          'text': _messageController.text,
-          'isUser': true,
-          'time': 'now',
-        });
-      });
-      _messageController.clear();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        title: Text(widget.partnerName),
+        centerTitle: true,
+        backgroundColor: Colors.blue.shade400,
+        elevation: 0,
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Colors.blue.shade50, Colors.purple.shade50],
+          ),
+        ),
+        child: Column(
           children: [
-            Text(user.name),
-            Text(
-              user.goal,
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
+            Expanded(
+              child: ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: messages.length,
+                itemBuilder: (context, index) {
+                  final message = messages[index];
+                  final isPartner = message['sender'] == 'partner';
+
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 12.0),
+                    child: Align(
+                      alignment: isPartner
+                          ? Alignment.centerLeft
+                          : Alignment.centerRight,
+                      child: Container(
+                        constraints: BoxConstraints(
+                          maxWidth: MediaQuery.of(context).size.width * 0.7,
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                        decoration: BoxDecoration(
+                          color: isPartner
+                              ? Colors.blue.shade400
+                              : Colors.purple.shade400,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Text(
+                          message['text']!,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 8,
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _messageController,
+                      decoration: InputDecoration(
+                        hintText: 'Type a message...',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey.shade100,
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  GestureDetector(
+                    onTap: () {
+                      if (_messageController.text.isNotEmpty) {
+                        setState(() {
+                          messages.add({
+                            'sender': 'user',
+                            'text': _messageController.text,
+                          });
+                          _messageController.clear();
+                        });
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.blue.shade400,
+                        shape: BoxShape.circle,
+                      ),
+                      padding: const EdgeInsets.all(12),
+                      child: const Icon(
+                        Icons.send,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: messages.length,
-              itemBuilder: (context, index) {
-                final message = messages[index];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: Align(
-                    alignment: message['isUser'] ? Alignment.centerRight : Alignment.centerLeft,
-                    child: Container(
-                      constraints: BoxConstraints(
-                        maxWidth: MediaQuery.of(context).size.width * 0.7,
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
-                      ),
-                      decoration: BoxDecoration(
-                        color: message['isUser'] ? const Color(0xFF6C63FF) : Colors.grey[200],
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            message['text'],
-                            style: TextStyle(
-                              color: message['isUser'] ? Colors.white : Colors.black,
-                              fontSize: 14,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            message['time'],
-                            style: TextStyle(
-                              color: message['isUser'] ? Colors.white70 : Colors.grey,
-                              fontSize: 10,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              border: Border(
-                top: BorderSide(color: Colors.grey[300]!),
-              ),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _messageController,
-                    decoration: InputDecoration(
-                      hintText: 'Type a message...',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24),
-                        borderSide: BorderSide(color: Colors.grey[300]!),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                FloatingActionButton(
-                  mini: true,
-                  onPressed: _sendMessage,
-                  backgroundColor: const Color(0xFF6C63FF),
-                  child: const Icon(Icons.send),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
