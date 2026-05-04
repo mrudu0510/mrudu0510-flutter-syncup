@@ -95,12 +95,20 @@ class MatchesScreen extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: Colors.white.withOpacity(0.3),
+                                  image: match.containsKey('image')
+                                      ? DecorationImage(
+                                          image: NetworkImage(match['image']!),
+                                          fit: BoxFit.cover,
+                                        )
+                                      : null,
                                 ),
-                                child: const Icon(
-                                  Icons.person,
-                                  size: 40,
-                                  color: Colors.white,
-                                ),
+                                child: match.containsKey('image')
+                                    ? null
+                                    : const Icon(
+                                        Icons.person,
+                                        size: 40,
+                                        color: Colors.white,
+                                      ),
                               ),
                               const SizedBox(width: 16),
                               Expanded(
